@@ -1,0 +1,244 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#app-container{
+    display: flex;
+    height: 100vh;
+    background-color: white;
+}
+
+.sidebar{
+    width: 250px;
+    background-color: #f9f9f9;
+    border-right: 2px solid #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.sidebar h2{
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.sidebar nav ul{
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar nav ul li{
+    margin-bottom: 10px;
+}
+
+.sidebar nav ul li a{
+    text-decoration: none;
+    color: #333;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3 ease;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active{
+    background-color: #9c88ff;
+    color: white;
+}
+
+.toggle-btn span{
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    border-radius: 3px;
+}
+
+.screen{
+    display: none;
+    padding: 20px;
+    /*padding: 0;*/
+    width: 100%;
+    max-width: 800px;
+    margin: 0 100px;
+}
+
+.screen.active{
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+    /*height: 100%;*/
+}
+
+.grade_test{
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.button1{
+    background-color: #fff;
+    color: #4ab08f;
+    padding: 10px  20px;
+    margin: 25px auto;
+    cursor: pointer;
+    border-radius: 20px;
+    border-color: rgb(175, 139, 76);
+    border: 2px solid;
+    font-size: 20px;
+    background: rgb(42, 42, 171);
+    transition: all 0,3s ease;/*Поволяет изменять внешний вид элемента*/
+    height: 70px;
+    width: 260px;
+}
+
+.button1:hover{/*Срабатывает, когда пользователь наводит на элемент*/
+    background: rgb(176, 177, 81);/*Благодаря hover меняет цвет*/
+    transform: scale(1.05);/*при наведение увеличивает размер*/
+}
+
+.form-content{
+    padding: 20px;
+    background-color: white;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.form-step{
+    display: none;
+    padding: 20px;
+    background-color: white;
+}
+
+.form-step.active{
+    display: block;
+}
+
+.form-step h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+}
+
+#infoForm{
+    /*margin-top: 100px;*/
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label{
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input{
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.checkbox-group{
+    margin-bottom: 20px;
+}
+
+.checkbox-group label{
+    display: block;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.checkbox-group input[type="checkbox"]{
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+#overview-content{
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-bottom: 20px
+}
+
+.overview-card{
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0);
+}
+
+.overview-card h2{
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #4ab08f;
+    padding-bottom: 5px;
+}
+
+.overview-card p{
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.no-data{
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+.main-content{
+    flex: 1;
+    padding: 20px;
+    overflow-y:auto;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.overview-wrapper{
+    display: flex;
+    flex-direction: column;
+    /*justify-content: space-between;*/
+    /*height: 100%;*/
+    padding: 20px;
+    /*width: 100%;*/
+    align-self: center;
+}
+
+.back-button{
+    margin-top: 20px;
+    align-self: center;
+    width: 260px;
+    background-color: white;
+    border-color: rgb(175, 139, 76);
+    border-radius: 20px;
+    border: 2px solid red;
+    font-size: 20px;
+    color: #1fb283;
+    cursor: pointer;
+    transition: all 0.3 ease;
+    height: 70px;
+    width: 260px;
+}
+
+.back-button:hover{
+    background: #b4d487;
+    transform: scale(1.05);
+}
+
