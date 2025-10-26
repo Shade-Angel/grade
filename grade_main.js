@@ -1,7 +1,15 @@
 let userData ={
     personalInfo:{},
-    selectedTests:[]
+    selectedTests:[],
+    allReports:[]
 };//переменная для хранения данных и дальнейшей деструктуризации
+
+localStorage.setItem('userData', JSON.stringify(userData));
+
+const savedData = localStorage.getItem('userData');
+if(savedData){
+    userData = JSON.parse(savedData);
+}
 
 function showScreen(screenId){ //Эта функция нужна для переключения экранов
     const screens = document.querySelectorAll('.screen');// Сначала выполняется скрывание экранов
@@ -66,6 +74,15 @@ function nextStep(currentStep){// Переход между шагами
         // В этом месте Рома, ты можешь прописывать серверную логику(сохранение или отправку на сервер)
         const checkboxes = document.querySelectorAll('input[name="testType"]:checked');
         userData.selectedTests = Array.from(checkboxes).map(cb => cb.value);
+
+        const newReport = {
+            personalInfo:{ ...userData.personalInfo},
+            selectedTests:[ ...userData.selectedTests],
+            timestamp: new Date().toLocaleDateString()
+        };
+
+        userData.allReports.push(newReport);
+
         alert('Тест завершен');
         showScreen('screen-overview');//Возрашение в меню
     };
@@ -94,39 +111,59 @@ function resetTest(){//Если пользователь что-то непра�
 
 function displayReport(){
     const reportContainer = document.getElementById('report-content');//Тут происходиттзамена старого кода на новый html код
-    if(Object.keys(userData).length === 0){//Здесь происходит интерполяция строк
-        reportContainer.innerHTML = '<p>Нет данных</p>';
-        return;
-    };
+    if(!reportContainer) return;
 
-    reportContainer.innerHTML = `
-        <div>
-            <h2>Общая информация</h2>
-            <p><strong>ФИО:</strong> ${userData.lastName} ${userData.firstName} ${userData.patronymic}</p>
-            <p><strong>Должность:</strong> ${userData.lastName} </p>
-            <p><strong>Стаж:</strong> ${userData.experience} </p>
-            <h2>Пройденный тест</h2>
-            <p>Hard skill, Soft skill, Психометрия</p>
-        </div>
-    `;//Вывод данных на html страницу
+    if(userData.allReports.length === 0){
+        reportContainer.innerHTML = '<p class="no-data">Нет данных</p>';
+        return
+    }
+    
+    let reportHTML = '';
+
+    userData.allReports.forEach((report, index) => {
+        const { personalInfo, selectedTests, timestamp} = report;
+
+        const testLabels = {
+            'hard':'Hard skills',
+            'soft':'Soft skills',
+            'psycho':'Психометрия'
+        };
+
+        const selectedTestsLabels = selectedTests.map(value => testLabels[value] || value).join(', ');
+
+        reportHTML += `
+            <div class="overview-card">
+                <h2>Отчет #${index + 1} (${timestamp})</h2>
+                <p><strong>ФИО:</strong> ${personalInfo.lastName || ''} ${personalInfo.firstName || ''} ${personalInfo.patronymic || ''}</p>
+                <p><strong>Должность:</strong> ${personalInfo.position || ''} </p>
+                <p><strong>Стаж:</strong> ${personalInfo.experience || ''} </p>
+                <p><strong>Пройденные тесты:</strong> ${selectedTestsLabels || 'Не выбраны'} </p>
+            </div>
+            `;
+    });
+
+    reportContainer.innerHTML = reportHTML;
+
 };
 
 function displayOverview(){
     const container = document.getElementById('overview-content');
-    const personal = userData.personalInfo;
-    const tests = userData.selectedTests;
+    if(!container) return;
 
-    if(!personal || !personal.lastName){
+    if(userData.allReports.length === 0){
         container.innerHTML = '<p class="no-data">Error, not found.</p>';
         return;
     };
+
+    const lastReport = userData.allReports[userData.allReports.length - 1];
+    const { personalInfo, selectedTests} = lastReport;
 
     const testLabels = {
         'hard':'Hard skills',
         'soft':'Soft skills',
         'psycho':'Психометрия'
     };
-    const selectedTestsLabels = tests.map(value => testLabels[value] || value).join(', ');
+    const selectedTestsLabels = selectedTests.map(value => testLabels[value] || value).join(', ');
 
     const reportHTML = `
     <div class="overview-card">
