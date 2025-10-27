@@ -42,7 +42,7 @@
     padding: 10px 15px;
     display: block;
     border-radius: 5px;
-    transition: background-color 0.3 ease;
+    transition: all 0.3 ease;
 }
 
 .sidebar nav ul li a:hover,
