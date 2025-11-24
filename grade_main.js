@@ -1,6 +1,6 @@
 "use strict";
 
-let userData ={
+let userData = {
     personalInfo:{},
     selectedTests:[],
     allReports:[]
