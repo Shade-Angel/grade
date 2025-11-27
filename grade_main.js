@@ -1,5 +1,19 @@
 "use strict";
 
+function checkXSS(text){
+    if(text == null){
+        return '';
+    }
+    const map = {
+        '&': '&amp;',
+        '<': '&alt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+    };
+    return text.toString().replace(/[&<>"']/g, function(xss) {return map[xss];});
+}
+
 let userData = {
     personalInfo:{},
     selectedTests:[],
@@ -61,12 +75,12 @@ function nextStep(currentStep){// Переход между шагами
 
         const formData = new FormData(form);//Тут я сохраняю данные формы в переменную, с помощью объекта FormData(form)
         userData.personalInfo = {//Вот тут Рома, происходит сохранение данных в глобальную перменную!!!!!!!!!!!!!!!!!!!
-            lastName: formData.get('lastName'),
-            firstName: formData.get('firstName'),
-            patronymic: formData.get('patronymic'),
-            position: formData.get('position'),
-            experience: formData.get('experience'),
-        };
+            lastName: checkXSS(formData.get('lastName')),
+            firstName: checkXSS(formData.get('firstName')),
+            patronymic: checkXSS(formData.get('patronymic')),
+            position: checkXSS(formData.get('position')),
+            experience: checkXSS(formData.get('experience')),
+        };//Если котортко, тут происходит экранирование
 
         step1.classList.remove('active');// Если пользователь заполнил форму идем дальше и обновляем прогресс
         step2.classList.add('active');
@@ -131,14 +145,20 @@ function displayReport(){
             'psycho':'Психометрия'
         };
 
+        const lastNameXSS = checkXSS(personalInfo.lastName || '');
+        const firstNameXSS = checkXSS(personalInfo.firstName || '');
+        const patronymicXSS = checkXSS(personalInfo.patronymic || '');
+        const positionXSS = checkXSS(personalInfo.position || '');
+        const experienceXSS = checkXSS(personalInfo.experience || '');
+
         const selectedTestsLabels = selectedTests.map(value => testLabels[value] || value).join(', ');
 
         reportHTML += `
             <div class="overview-card">
                 <h2>Отчет #${index + 1} (${timestamp})</h2>
-                <p><strong>ФИО:</strong> ${personalInfo.lastName || ''} ${personalInfo.firstName || ''} ${personalInfo.patronymic || ''}</p>
-                <p><strong>Должность:</strong> ${personalInfo.position || ''} </p>
-                <p><strong>Стаж:</strong> ${personalInfo.experience || ''} </p>
+                <p><strong>ФИО:</strong> ${lastNameXSS} ${firstNameXSS} ${patronymicXSS}</p>
+                <p><strong>Должность:</strong> ${positionXSS} </p>
+                <p><strong>Стаж:</strong> ${experienceXSS} </p>
                 <p><strong>Пройденные тесты:</strong> ${selectedTestsLabels || 'Не выбраны'} </p>
             </div>
             `;
@@ -170,9 +190,9 @@ function displayOverview(){
     const reportHTML = `
     <div class="overview-card">
         <h2>Персональные данные</h2>
-        <p><strong>ФИО:</strong> ${userData.personalInfo.lastName} ${userData.personalInfo.firstName} ${userData.personalInfo.patronymic}</p>
-        <p><strong>Должность:</strong> ${userData.personalInfo.position} </p>
-        <p><strong>Стаж:</strong> ${userData.personalInfo.experience} </p>
+        <p><strong>ФИО:</strong> ${checkXSS(userData.personalInfo.lastName)} ${checkXSS(userData.personalInfo.firstName)} ${checkXSS(userData.personalInfo.patronymic)}</p>
+        <p><strong>Должность:</strong> ${checkXSS(userData.personalInfo.position)} </p>
+        <p><strong>Стаж:</strong> ${checkXSS(userData.personalInfo.experience)} </p>
     </div>
     <div class="overview-card">
         <h2>Пройденные тесты</h2>
